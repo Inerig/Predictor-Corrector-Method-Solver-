@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Adams-Bashforth and Adams-Moulton 4th Order Method Solver</title>
+<title>Predictor-Corrector Method Solver</title>
 <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -48,11 +48,25 @@
     </div>
     <button onclick="solveAndDisplay()">Solve</button>
     <div class="calculations">
+        <h2>Euler Method Calculations for First Three Steps:</h2>
+        <div id="eulerCalculationsContent"></div>
         <h2>Adams-Bashforth 4th Order Calculations:</h2>
         <div id="abCalculationsContent"></div>
         <h2>Adams-Moulton 4th Order Calculations:</h2>
         <div id="amCalculationsContent"></div>
     </div>
+    <table id="eulerResultTable">
+        <thead>
+            <tr>
+                <th>Step</th>
+                <th>t</th>
+                <th>ω (Euler)</th>
+            </tr>
+        </thead>
+        <tbody>
+           
+        </tbody>
+    </table>
     <table id="abResultTable">
         <thead>
             <tr>
@@ -62,7 +76,7 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Results will be inserted here -->
+            
         </tbody>
     </table>
     <table id="amResultTable">
@@ -74,7 +88,7 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Results will be inserted here -->
+            
         </tbody>
     </table>
     <div class="instructions">
