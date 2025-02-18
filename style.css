@@ -14,7 +14,7 @@ body {
     width: 80%;
     max-width: 600px;
     min-height: 100vh;
-    background-color: #e0e0e0;
+    background-color: #f0f8ff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -45,8 +45,8 @@ body {
     margin-left: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    min-width: 100px; /* Minimum width */
-    max-width: 300px; /* Maximum width */
+    min-width: 100px; 
+    max-width: 300px; 
     transition: width 0.3s ease;
 }
 
@@ -57,7 +57,7 @@ body {
 button {
     width: 100%;
     padding: 10px;
-    background-color: #6b8e68;
+    background-color: #d8bfd8; 
     color: white;
     border: none;
     border-radius: 5px;
@@ -65,7 +65,7 @@ button {
 }
 
 button:hover {
-    background-color: #4eaa75;
+    background-color: #c096c0;
 }
 
 table {
@@ -83,7 +83,7 @@ th, td {
 }
 
 th {
-    background-color: #6b8e68;
+    background-color: #d8bfd8;
     color: white;
 }
 
@@ -91,7 +91,7 @@ tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-h1, label {
+h1, label, .formula {
     font-family: 'Comic Neue', cursive;
 }
 
@@ -127,19 +127,5 @@ h1, label {
     content: "•";
     margin-right: 10px;
     font-size: 20px;
-    color: #6b8e68;
-}
-
-.calculations .formula {
-    font-family: 'Courier New', monospace;
-    margin-bottom: 5px;
-}
-
-.calculations .value {
-    font-weight: bold;
-}
-
-.calculations .value.h {
-    font-style: italic;
-    font-weight: normal;
+    color: #d8bfd8;
 }
