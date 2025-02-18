@@ -25,9 +25,10 @@ function adamsBashforth4(f, a, b, n, alpha) {
     t[0] = a;
     w[0] = alpha;
     // Use Euler method to get the first three steps
-    for (let i = 1; i < 4; i++) {
-        w[i] = w[i - 1] + h * f(t[i - 1], w[i - 1]);
-        t[i] = t[i - 1] + h;
+    let eulerResult = eulerMethod(f, a, b, 3, alpha);
+    for (let i = 0; i < 4; i++) {
+        t[i] = eulerResult.t[i];
+        w[i] = eulerResult.w[i];
     }
 
     // Perform Adams-Bashforth 4th Order method for subsequent steps
@@ -52,9 +53,10 @@ function adamsMoulton4(f, a, b, n, alpha) {
     t[0] = a;
     w[0] = alpha;
     // Use Euler method to get the first three steps
-    for (let i = 1; i < 4; i++) {
-        w[i] = w[i - 1] + h * f(t[i - 1], w[i - 1]);
-        t[i] = t[i - 1] + h;
+    let eulerResult = eulerMethod(f, a, b, 3, alpha);
+    for (let i = 0; i < 4; i++) {
+        t[i] = eulerResult.t[i];
+        w[i] = eulerResult.w[i];
     }
 
     // Perform Adams-Moulton 4th Order method for subsequent steps
