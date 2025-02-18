@@ -8,16 +8,16 @@ body {
     justify-content: center;
     align-items: center;
     background-color: #f9f9f9;
+    min-height: 100vh;
 }
 
 .container {
-    width: 80%;
-    max-width: 600px;
-    min-height: 100vh;
+    width: 90%;
+    max-width: 650px;
     background-color: #f0f8ff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25,47 +25,59 @@ body {
 
 .form-group {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     margin-bottom: 15px;
+    width: 100%;
 }
 
 .form-group label {
-    margin-right: 10px;
-    width: 150px; /* Fixed width for labels */
+    width: 160px;
     text-align: right;
+    font-weight: bold;
+    color: #333;
 }
 
 .input-container {
     display: flex;
-    align-items: center;
+    flex-grow: 1;
 }
 
 .input-container input {
+    flex-grow: 1;
     padding: 10px;
-    margin-left: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    min-width: 100px; 
-    max-width: 300px; 
-    transition: width 0.3s ease;
+    border-radius: 6px;
+    min-width: 120px;
+    max-width: 100%;
+    transition: all 0.3s ease;
 }
 
-.function-input {
-    order: 1;
+.input-container input:focus {
+    border-color: #d8bfd8;
+    box-shadow: 0 0 8px rgba(216, 191, 216, 0.6);
+    outline: none;
 }
 
 button {
     width: 100%;
-    padding: 10px;
-    background-color: #d8bfd8; 
+    padding: 12px;
+    background-color: #d8bfd8;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
     background-color: #c096c0;
+    transform: scale(1.05);
+}
+
+button:active {
+    background-color: #b080b0;
 }
 
 table {
@@ -88,44 +100,74 @@ th {
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #f7f7f7;
 }
 
 h1, label, .formula {
     font-family: 'Comic Neue', cursive;
 }
 
-.instructions {
+.instructions, .example {
     margin-top: 20px;
     font-size: 14px;
-    line-height: 1.5;
-}
-
-.example {
-    margin-top: 10px;
-    font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.6;
+    padding: 12px;
+    background: #fafafa;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
 }
 
 .calculations {
-    margin-bottom: 20px;
+    width: 100%;
+    margin-top: 20px;
     font-size: 14px;
     line-height: 1.5;
+    padding: 15px;
+    background: #f0f8ff;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .calculations h2 {
     font-size: 16px;
+    font-weight: bold;
     margin-bottom: 10px;
+    text-decoration: underline;
 }
 
 .calculations .step {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     font-weight: bold;
+    padding: 8px;
+    background: #fafafa;
+    border-radius: 6px;
 }
 
 .calculations .step::before {
-    content: "•";
-    margin-right: 10px;
-    font-size: 20px;
+    content: "▶";
+    margin-right: 8px;
+    font-size: 18px;
     color: #d8bfd8;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 600px) {
+    .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-group label {
+        width: 100%;
+        text-align: left;
+        margin-bottom: 5px;
+    }
+
+    .input-container input {
+        width: 100%;
+    }
+
+    button {
+        font-size: 14px;
+    }
 }
