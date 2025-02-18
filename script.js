@@ -1,3 +1,20 @@
+function eulerMethod(f, a, b, n, alpha) {
+    // Compute step size
+    let h = (b - a) / n;
+    // Initialize arrays to store results
+    let t = new Array(n + 1);
+    let w = new Array(n + 1);
+    // Set initial conditions
+    t[0] = a;
+    w[0] = alpha;
+    // Perform Euler's method
+    for (let i = 0; i < n; i++) {
+        w[i + 1] = w[i] + h * f(t[i], w[i]);  // Update solution
+        t[i + 1] = t[i] + h;                  // Update time
+    }
+    return { t: t, w: w };
+}
+
 function adamsBashforth4(f, a, b, n, alpha) {
     // Compute step size
     let h = (b - a) / n;
@@ -109,15 +126,38 @@ function solveAndDisplay() {
         const f = parseFunction(funcStr);
         console.log("Parsed Function:", f.toString());  // Debug: Check the parsed function
 
+        const eulerResult = eulerMethod(f, a, b, 3, alpha);
         const abResult = adamsBashforth4(f, a, b, n, alpha);
         const amResult = adamsMoulton4(f, a, b, n, alpha);
+
+        // Display calculations for Euler Method for first three steps
+        const eulerCalculationsContent = document.getElementById('eulerCalculationsContent');
+        eulerCalculationsContent.innerHTML = '';
+
+        // Compute h once and reuse
+        const h = (b - a) / 3;
+
+        for (let i = 0; i < 3; i++) {
+            const step = document.createElement('div');
+            step.className = 'step';
+            step.innerHTML = `
+                <div class="formula">Step ${i}: t = ${eulerResult.t[i].toFixed(decimalPlaces)}, ω = ${eulerResult.w[i].toFixed(decimalPlaces)}</div>
+                <div class="formula">h = ${h.toFixed(decimalPlaces)}</div>
+                <div class="formula">Calculate k1: k1 = h * f(${eulerResult.t[i].toFixed(decimalPlaces)}, ${eulerResult.w[i].toFixed(decimalPlaces)})</div>
+                <div class="formula">k1 = ${h.toFixed(decimalPlaces)} * ${f(eulerResult.t[i], eulerResult.w[i]).toFixed(decimalPlaces)}</div>
+                <div class="formula">Update ω: ω<sub>${i+1}</sub> = ω<sub>${i}</sub> + k1</div>
+                <div class="formula">ω<sub>${i+1}</sub> = ${eulerResult.w[i].toFixed(decimalPlaces)} + ${k1.toFixed(decimalPlaces)}</div>
+                <div class="formula">ω<sub>${i+1}</sub> = ${eulerResult.w[i+1].toFixed(decimalPlaces)}</div>
+                <div class="formula">Update t: t<sub>${i+1}</sub> = t<sub>${i}</sub> + h</div>
+                <div class="formula">t<sub>${i+1}</sub> = ${eulerResult.t[i].toFixed(decimalPlaces)} + ${h.toFixed(decimalPlaces)}</div>
+                <div class="formula">t<sub>${i+1}</sub> = ${eulerResult.t[i+1].toFixed(decimalPlaces)}</div>
+            `;
+            eulerCalculationsContent.appendChild(step);
+        }
 
         // Display calculations for Adams-Bashforth 4th Order
         const abCalculationsContent = document.getElementById('abCalculationsContent');
         abCalculationsContent.innerHTML = '';
-
-        // Compute h once and reuse
-        const h = (b - a) / n;
 
         for (let i = 3; i < n; i++) {
             let k1 = f(abResult.t[i], abResult.w[i]);
@@ -180,6 +220,13 @@ function solveAndDisplay() {
                 <div class="formula">t<sub>${i+1}</sub> = ${amResult.t[i+1].toFixed(decimalPlaces)}</div>
             `;
             amCalculationsContent.appendChild(step);
+        }
+
+        // Populate the table for Euler Method
+        const eulerTableBody = document.querySelector('#eulerResultTable tbody');
+        eulerTableBody.innerHTML = '';
+        for (let i = 0; i <= 3; i++) {
+            eulerTableBody.innerHTML += `<tr><td>${i}</td><td>${eulerResult.t[i].toFixed(decimalPlaces)}</td><td>${eulerResult.w[i].toFixed(decimalPlaces)}</td></tr>`;
         }
 
         // Populate the table for Adams-Bashforth 4th Order
