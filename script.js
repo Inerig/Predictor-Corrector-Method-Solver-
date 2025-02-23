@@ -1,42 +1,36 @@
 function eulerMethod(f, a, b, n, alpha) {
-    // Compute step size
     let h = (b - a) / n;
-    // Initialize arrays to store results
     let t = new Array(n + 1);
     let w = new Array(n + 1);
-    // Set initial conditions
     t[0] = a;
     w[0] = alpha;
-    // Perform Euler's method
     for (let i = 0; i < n; i++) {
-        w[i + 1] = w[i] + h * f(t[i], w[i]);  // Update solution
-        t[i + 1] = t[i] + h;                  // Update time
+        w[i + 1] = w[i] + h * f(t[i], w[i]);
+        t[i + 1] = t[i] + h;
     }
     return { t: t, w: w };
 }
 
 function adamsBashforth4(f, a, b, n, alpha) {
-    // Compute step size
-    let h = (b - a) / n;
-    // Initialize arrays to store results
-    let t = new Array(n + 1);
-    let w = new Array(n + 1);
-    // Set initial conditions
-    t[0] = a;
-    w[0] = alpha;
-    // Use Euler method to get the first three steps
-    let eulerResult = eulerMethod(f, a, b, 3, alpha);
-    for (let i = 0; i < 4; i++) {
+    const h = (b - a) / n;
+    const t = new Array(n + 1);
+    const w = new Array(n + 1);
+
+    // Generate initial 4 points using Euler
+    const initialSteps = 3;
+    const eulerResult = eulerMethod(f, a, a + initialSteps * h, initialSteps, alpha);
+
+    for (let i = 0; i <= initialSteps; i++) {
         t[i] = eulerResult.t[i];
         w[i] = eulerResult.w[i];
     }
 
-    // Perform Adams-Bashforth 4th Order method for subsequent steps
-    for (let i = 3; i < n; i++) {
-        let k1 = f(t[i], w[i]);
-        let k2 = f(t[i - 1], w[i - 1]);
-        let k3 = f(t[i - 2], w[i - 2]);
-        let k4 = f(t[i - 3], w[i - 3]);
+    // Adams-Bashforth for remaining steps
+    for (let i = initialSteps; i < n; i++) {
+        const k1 = f(t[i], w[i]);
+        const k2 = f(t[i - 1], w[i - 1]);
+        const k3 = f(t[i - 2], w[i - 2]);
+        const k4 = f(t[i - 3], w[i - 3]);
         w[i + 1] = w[i] + (h / 24) * (55 * k1 - 59 * k2 + 37 * k3 - 9 * k4);
         t[i + 1] = t[i] + h;
     }
@@ -44,28 +38,31 @@ function adamsBashforth4(f, a, b, n, alpha) {
 }
 
 function adamsMoulton4(f, a, b, n, alpha) {
-    // Compute step size
-    let h = (b - a) / n;
-    // Initialize arrays to store results
-    let t = new Array(n + 1);
-    let w = new Array(n + 1);
-    // Set initial conditions
-    t[0] = a;
-    w[0] = alpha;
-    // Use Euler method to get the first three steps
-    let eulerResult = eulerMethod(f, a, b, 3, alpha);
-    for (let i = 0; i < 4; i++) {
+    const h = (b - a) / n;
+    const t = new Array(n + 1);
+    const w = new Array(n + 1);
+
+    // Generate initial 4 points using Euler
+    const initialSteps = 3;
+    const eulerResult = eulerMethod(f, a, a + initialSteps * h, initialSteps, alpha);
+
+    for (let i = 0; i <= initialSteps; i++) {
         t[i] = eulerResult.t[i];
         w[i] = eulerResult.w[i];
     }
 
-    // Perform Adams-Moulton 4th Order method for subsequent steps
-    for (let i = 3; i < n; i++) {
-        let k1 = f(t[i], w[i]);
-        let k2 = f(t[i - 1], w[i - 1]);
-        let k3 = f(t[i - 2], w[i - 2]);
-        let k4 = f(t[i - 3], w[i - 3]);
-        let k5 = f(t[i + 1], w[i + 1]); // Predict using Adams-Bashforth
+    // Adams-Moulton for remaining steps
+    for (let i = initialSteps; i < n; i++) {
+        // Predictor (Adams-Bashforth)
+        const k1 = f(t[i], w[i]);
+        const k2 = f(t[i - 1], w[i - 1]);
+        const k3 = f(t[i - 2], w[i - 2]);
+        const k4 = f(t[i - 3], w[i - 3]);
+        const predictor = w[i] + (h / 24) * (55 * k1 - 59 * k2 + 37 * k3 - 9 * k4);
+        const tPredictor = t[i] + h;
+
+        // Corrector (Adams-Moulton)
+        const k5 = f(tPredictor, predictor);
         w[i + 1] = w[i] + (h / 24) * (9 * k5 + 19 * k1 - 5 * k2 + k3);
         t[i + 1] = t[i] + h;
     }
