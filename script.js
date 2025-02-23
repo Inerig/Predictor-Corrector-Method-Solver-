@@ -4,11 +4,13 @@ function eulerMethod(f, a, b, n, alpha) {
     let w = new Array(n + 1);
     t[0] = a;
     w[0] = alpha;
-    for (let i = 0; i < n; i++) {
-        w[i + 1] = w[i] + h * f(t[i], w[i]);
+
+    for (let i = 0; i < 3; i++) {  // Euler up to t = 0.6 for h = 0.2
         t[i + 1] = t[i] + h;
+        w[i + 1] = w[i] + h * f(t[i], w[i]);
     }
-    return { t: t, w: w };
+
+    return { t, w };
 }
 
 function adamsBashforth4(f, a, b, n, alpha) {
@@ -16,25 +18,26 @@ function adamsBashforth4(f, a, b, n, alpha) {
     const t = new Array(n + 1);
     const w = new Array(n + 1);
 
-    // Generate initial 4 points using Euler
-    const initialSteps = 3;
-    const eulerResult = eulerMethod(f, a, a + initialSteps * h, initialSteps, alpha);
+    // Use Euler for the first 4 steps (up to t = 0.6)
+    const eulerResult = eulerMethod(f, a, b, n, alpha);
 
-    for (let i = 0; i <= initialSteps; i++) {
+    for (let i = 0; i <= 3; i++) {
         t[i] = eulerResult.t[i];
         w[i] = eulerResult.w[i];
     }
 
     // Adams-Bashforth for remaining steps
-    for (let i = initialSteps; i < n; i++) {
+    for (let i = 3; i < n; i++) {
+        t[i + 1] = t[i] + h;
         const k1 = f(t[i], w[i]);
         const k2 = f(t[i - 1], w[i - 1]);
         const k3 = f(t[i - 2], w[i - 2]);
         const k4 = f(t[i - 3], w[i - 3]);
+
         w[i + 1] = w[i] + (h / 24) * (55 * k1 - 59 * k2 + 37 * k3 - 9 * k4);
-        t[i + 1] = t[i] + h;
     }
-    return { t: t, w: w };
+
+    return { t, w };
 }
 
 function adamsMoulton4(f, a, b, n, alpha) {
@@ -42,31 +45,32 @@ function adamsMoulton4(f, a, b, n, alpha) {
     const t = new Array(n + 1);
     const w = new Array(n + 1);
 
-    // Generate initial 4 points using Euler
-    const initialSteps = 3;
-    const eulerResult = eulerMethod(f, a, a + initialSteps * h, initialSteps, alpha);
+    // Use Euler for the first 4 steps (up to t = 0.6)
+    const eulerResult = eulerMethod(f, a, b, n, alpha);
 
-    for (let i = 0; i <= initialSteps; i++) {
+    for (let i = 0; i <= 3; i++) {
         t[i] = eulerResult.t[i];
         w[i] = eulerResult.w[i];
     }
 
     // Adams-Moulton for remaining steps
-    for (let i = initialSteps; i < n; i++) {
+    for (let i = 3; i < n; i++) {
+        t[i + 1] = t[i] + h;
+
         // Predictor (Adams-Bashforth)
         const k1 = f(t[i], w[i]);
         const k2 = f(t[i - 1], w[i - 1]);
         const k3 = f(t[i - 2], w[i - 2]);
         const k4 = f(t[i - 3], w[i - 3]);
+
         const predictor = w[i] + (h / 24) * (55 * k1 - 59 * k2 + 37 * k3 - 9 * k4);
-        const tPredictor = t[i] + h;
 
         // Corrector (Adams-Moulton)
-        const k5 = f(tPredictor, predictor);
+        const k5 = f(t[i + 1], predictor);
         w[i + 1] = w[i] + (h / 24) * (9 * k5 + 19 * k1 - 5 * k2 + k3);
-        t[i + 1] = t[i] + h;
     }
-    return { t: t, w: w };
+
+    return { t, w };
 }
 
 function parseFunction(funcStr) {
