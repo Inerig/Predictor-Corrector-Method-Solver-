@@ -133,29 +133,35 @@ function solveAndDisplay() {
         const amResult = adamsMoulton4(f, a, b, n, alpha);
 
         // Display calculations for Euler Method for first three steps
-        const eulerCalculationsContent = document.getElementById('eulerCalculationsContent');
-        eulerCalculationsContent.innerHTML = '';
+const eulerCalculationsContent = document.getElementById('eulerCalculationsContent');
+eulerCalculationsContent.innerHTML = '';
 
-        // Compute h once and reuse
-        const h = (b - a) / 3;
+// Compute h once and reuse
+const h = (b - a) / 3;
 
-        for (let i = 0; i < 3; i++) {
-            const step = document.createElement('div');
-            step.className = 'step';
-            step.innerHTML = `
-                <div class="formula">Step ${i}: t = ${eulerResult.t[i].toFixed(decimalPlaces)}, ω = ${eulerResult.w[i].toFixed(decimalPlaces)}</div>
-                <div class="formula">h = ${h.toFixed(decimalPlaces)}</div>
-                <div class="formula">Calculate k1: k1 = h * f(${eulerResult.t[i].toFixed(decimalPlaces)}, ${eulerResult.w[i].toFixed(decimalPlaces)})</div>
-                <div class="formula">k1 = ${h.toFixed(decimalPlaces)} * ${f(eulerResult.t[i], eulerResult.w[i]).toFixed(decimalPlaces)}</div>
-                <div class="formula">Update ω: ω<sub>${i+1}</sub> = ω<sub>${i}</sub> + k1</div>
-                <div class="formula">ω<sub>${i+1}</sub> = ${eulerResult.w[i].toFixed(decimalPlaces)} + ${k1.toFixed(decimalPlaces)}</div>
-                <div class="formula">ω<sub>${i+1}</sub> = ${eulerResult.w[i+1].toFixed(decimalPlaces)}</div>
-                <div class="formula">Update t: t<sub>${i+1}</sub> = t<sub>${i}</sub> + h</div>
-                <div class="formula">t<sub>${i+1}</sub> = ${eulerResult.t[i].toFixed(decimalPlaces)} + ${h.toFixed(decimalPlaces)}</div>
-                <div class="formula">t<sub>${i+1}</sub> = ${eulerResult.t[i+1].toFixed(decimalPlaces)}</div>
-            `;
-            eulerCalculationsContent.appendChild(step);
-        }
+for (let i = 0; i < 3; i++) {
+    const currentT = eulerResult.t[i];
+    const currentW = eulerResult.w[i];
+    const funcValue = f(currentT, currentW);
+    const k1 = h * funcValue; // Compute k1 here
+
+    const step = document.createElement('div');
+    step.className = 'step';
+    step.innerHTML = `
+        <div class="formula">Step ${i}: t = ${currentT.toFixed(decimalPlaces)}, ω = ${currentW.toFixed(decimalPlaces)}</div>
+        <div class="formula">h = ${h.toFixed(decimalPlaces)}</div>
+        <div class="formula">Calculate k1: k1 = h * f(${currentT.toFixed(decimalPlaces)}, ${currentW.toFixed(decimalPlaces)})</div>
+        <div class="formula">k1 = ${h.toFixed(decimalPlaces)} * ${funcValue.toFixed(decimalPlaces)}</div>
+        <div class="formula">k1 = ${k1.toFixed(decimalPlaces)}</div>
+        <div class="formula">Update ω: ω<sub>${i+1}</sub> = ω<sub>${i}</sub> + k1</div>
+        <div class="formula">ω<sub>${i+1}</sub> = ${currentW.toFixed(decimalPlaces)} + ${k1.toFixed(decimalPlaces)}</div>
+        <div class="formula">ω<sub>${i+1}</sub> = ${eulerResult.w[i+1].toFixed(decimalPlaces)}</div>
+        <div class="formula">Update t: t<sub>${i+1}</sub> = t<sub>${i}</sub> + h</div>
+        <div class="formula">t<sub>${i+1}</sub> = ${currentT.toFixed(decimalPlaces)} + ${h.toFixed(decimalPlaces)}</div>
+        <div class="formula">t<sub>${i+1}</sub> = ${eulerResult.t[i+1].toFixed(decimalPlaces)}</div>
+    `;
+    eulerCalculationsContent.appendChild(step);
+}
 
         // Display calculations for Adams-Bashforth 4th Order
         const abCalculationsContent = document.getElementById('abCalculationsContent');
